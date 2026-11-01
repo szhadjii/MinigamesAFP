@@ -62,6 +62,15 @@ class GameSession(db.Model):
     finished_at = db.Column(db.DateTime, nullable=False, default=utcnow)
     status = db.Column(db.String(10), nullable=False, default="active")
 
+    @staticmethod
+    def abandon_active(user_id, game=None):
+        query = GameSession.query.filter_by(user_id=user_id, status="active")
+        if game is not None:
+            query = query.filter_by(game=game)
+            for session in query:
+                session.status = "abandoned"
+                session.finished_at = utcnow()
+
 
 class Word(db.Model):
     tablename = "words"
