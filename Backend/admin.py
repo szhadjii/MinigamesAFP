@@ -183,6 +183,21 @@ def delete_content(kind, item_id):
     return jsonify({"message": "Nincs ilyen elem."}), 200
 
 # Statisztika -------------------------------------------------------------------------------
+@bp.route('/stats', methods=['GET'])
+@admin_required
+def get_stats():
+    games = {}
+    for game in GAMES:
+        scores = Score.query.filter_by(game=game).all()
+        points = [score.points for score in scores]
+        games[game] = {
+            "plays": GameSession.query.filter_by(game=game, status="finished").count(),
+            "players": len({score.user_id for score in scores}),
+            "avg_points": round(sum(points) / len(points), 1) if points else None,
+            "best_points": max(points) if points else None,
+        }
+
+    return jsonify({"games": games, "users": {"total": User.query.count()}}), 200
 
 
 
