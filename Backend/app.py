@@ -1,4 +1,3 @@
-
 import os
 from pathlib import Path
 
@@ -17,7 +16,7 @@ from seed import seed_database
 
 
 def create_app(test_config=None):
-    app = Flask(__name__, static_folder="../Frontend")
+    app = Flask(__name__, static_folder="../Frontend", static_url_path="")
     database = Path(app.root_path, "minigames.db").as_posix()
     app.config.from_mapping(
         SECRET_KEY=os.environ.get("SECRET_KEY", "dev-csere-le-eles-hasznalat-elott"),
@@ -45,6 +44,7 @@ def create_app(test_config=None):
         return app.send_static_file("index.html")
 
     with app.app_context():
+        import models
         db.create_all()
         seed_database(app)
 

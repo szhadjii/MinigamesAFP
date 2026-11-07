@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bejelentkezés – Játékgyűjtemény</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+  <header>
+    <span class="title">Játékgyűjtemény</span>
+    <button id="theme-btn" type="button">Sötét mód</button>
+  </header>
+
+  <main>
+    <h1>Bejelentkezés</h1>
+
+    <form id="login-form" class="box">
+      <p>
+        <label for="login-username">Felhasználónév</label><br>
+        <input id="login-username" type="text" autocomplete="username">
+      </p>
+      <p>
+        <label for="login-password">Jelszó</label><br>
+        <input id="login-password" type="password" autocomplete="current-password">
+      </p>
+      <button type="submit" class="primary" >Bejelentkezés</button>
+    </form>
+
+    <p id="login-info" class="info" hidden></p>
+    <p id="login-error" class="error" hidden></p>
+
+    <h1>Regisztráció</h1>
+
+    <form id="register-form" class="box">
+      <p>
+        <label for="register-username">Felhasználónév (3–20 karakter)</label><br>
+        <input id="register-username" type="text" autocomplete="username">
+      </p>
+      <p>
+        <label for="register-password">Jelszó (legalább 8 karakter)</label><br>
+        <input id="register-password" type="password" autocomplete="new-password">
+      </p>
+      <p>
+        <label for="register-password2">Jelszó még egyszer</label><br>
+        <input id="register-password2" type="password" autocomplete="new-password">
+      </p>
+      <button type="submit">Regisztráció</button>
+    </form>
+
+    <p id="register-error" class="error" hidden></p>
+  </main>
+
+  <script src="common.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

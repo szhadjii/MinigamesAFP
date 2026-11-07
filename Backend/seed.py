@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash
 
-from Backend.models import Word, db, TypingText, User
+from models import Word, db, TypingText, User
 
 SEED_WORDS = [
     "alma", "körte", "szilva", "barack", "cseresznye", "számítógép", "billentyűzet", "egyetem",

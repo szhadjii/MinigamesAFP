@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Játékgyűjtemény</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+  <header>
+    <span class="title">Játékgyűjtemény</span>
+    <div>
+      <button id="theme-btn" type="button">Sötét mód</button>
+      <span>Bejelentkezve: <b id="username"></b></span>
+      <button id="logout-btn" type="button">Kijelentkezés</button>
+    </div>
+  </header>
+
+  <main>
+    <h1>Válassz játékot</h1>
+
+    <p id="error" class="error" hidden></p>
+
+    <div id="games"></div>
+  </main>
+
+  <script src="common.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>

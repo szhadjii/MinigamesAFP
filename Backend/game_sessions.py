@@ -1,4 +1,4 @@
-from Backend.scores import save_score
+from scores import save_score
 from models import GameSession, db, utcnow
 
 

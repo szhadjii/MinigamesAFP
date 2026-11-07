@@ -9,9 +9,9 @@ def utcnow():
 
 
 class User(db.Model):
-    tablename = "users"
+    __tablename__ = "users"
 
-    id = db.Column(db.integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(10), nullable=False, default="player")
@@ -29,7 +29,7 @@ class User(db.Model):
 
 
 class Score(db.Model):
-    tablename = "scores"
+    __tablename__ = "scores"
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
@@ -52,7 +52,7 @@ class Score(db.Model):
 
 
 class GameSession(db.Model):
-    tablename = "game_sessions"
+    __tablename__ = "game_sessions"
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
@@ -73,7 +73,7 @@ class GameSession(db.Model):
 
 
 class Word(db.Model):
-    tablename = "words"
+    __tablename__ = "words"
 
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(50), nullable=False)
@@ -88,7 +88,7 @@ class Word(db.Model):
 
 
 class TypingText(db.Model):
-    tablename = "typing_texts"
+    __tablename__ = "typing_texts"
 
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(600), nullable=False)

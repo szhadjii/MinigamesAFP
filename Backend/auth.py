@@ -4,8 +4,7 @@ from flask import Blueprint, session, jsonify, request, g
 from sqlalchemy import func
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from Backend.models import GameSession
-from models import User, db
+from models import User, db, GameSession
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 

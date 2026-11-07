@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request, g
 
-from Backend.auth import admin_required
-from Backend.models import User, db, GameSession, Score, Word, TypingText
-from Backend.scores import GAMES
+from auth import admin_required
+from models import User, db, GameSession, Score, Word, TypingText
+from scores import GAMES
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
 

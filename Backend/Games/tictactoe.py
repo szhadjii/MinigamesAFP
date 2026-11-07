@@ -1,8 +1,8 @@
 import random
 
 from flask import Blueprint, jsonify, request, g, session
-from Backend import game_sessions
-from Backend.auth import login_required
+import game_sessions
+from auth import login_required
 
 GAME_ID = "tictactoe"
 WIN_LENGTH = {3: 3, 5: 4}
