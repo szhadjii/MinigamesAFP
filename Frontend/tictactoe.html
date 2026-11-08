@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amőba</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+  <header>
+    <a href="/">Játékgyűjtemény</a>
+    <div>
+      <button id="theme-btn" type="button">Sötét mód</button>
+      <span>Bejelentkezve: <b id="username"></b></span>
+      <button id="logout-btn" type="button">Kijelentkezés</button>
+    </div>
+  </header>
+
+  <main>
+    <h1>Amőba</h1>
+
+    <div class="settings">
+      <label for="mode">Mód:</label>
+      <select id="mode">
+        <option value="ai">Gép ellen</option>
+        <option value="two_player">Két játékos</option>
+      </select>
+
+      <label for="size">Tábla:</label>
+      <select id="size">
+        <option value="3">3×3</option>
+        <option value="5">5×5</option>
+      </select>
+
+      <span id="difficulty-box">
+        <label for="difficulty">Nehézség:</label>
+        <select id="difficulty">
+          <option value="easy">Könnyű</option>
+          <option value="medium" selected>Közepes</option>
+          <!-- TODO: Nehéz szint, ha a backend már támogatja -->
+        </select>
+      </span>
+
+      <button id="new-game-btn" type="button" class="primary">Új játék</button>
+    </div>
+
+    <p id="message" aria-live="polite"></p>
+    <p id="counter"></p>
+
+    <div id="board" class="board" hidden></div>
+
+    <p id="error" class="error" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <p id="result-text"></p>
+      <button id="replay-btn" type="button" class="primary">Újrajátszás</button>
+    </div>
+
+    <h2>Top 3</h2>
+    <div id="top3"></div>
+  </main>
+
+  <script src="common.js"></script>
+  <script src="tictactoe.js"></script>
+</body>
+</html>

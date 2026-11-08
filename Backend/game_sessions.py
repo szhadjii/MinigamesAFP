@@ -12,7 +12,7 @@ def get_current(user_id, game):
     return (GameSession.query.filter(
             GameSession.user_id == user_id,
             GameSession.game == game,
-            GameSession.status.in_("active", "finished"),
+            GameSession.status.in_(("active", "finished"))
         ).order_by(GameSession.id.desc()).first()
     )
 
@@ -28,7 +28,7 @@ def finish(session, state, points=None, difficulty=None, details=None):
         raise ValueError("A játék már lezárult.")
     session.state = state
     session.status = "finished"
-    session.finished_at = utcnow
+    session.finished_at = utcnow()
     if points is not None:
         save_score(session.user_id, session.game, points, difficulty, details)
     db.session.commit()

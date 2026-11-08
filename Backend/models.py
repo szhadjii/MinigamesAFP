@@ -59,7 +59,7 @@ class GameSession(db.Model):
     game = db.Column(db.String(20), nullable=False)
     state = db.Column(db.JSON)
     started_at = db.Column(db.DateTime, nullable=False, default=utcnow)
-    finished_at = db.Column(db.DateTime, nullable=False, default=utcnow)
+    finished_at = db.Column(db.DateTime, default=utcnow)
     status = db.Column(db.String(10), nullable=False, default="active")
 
     @staticmethod
