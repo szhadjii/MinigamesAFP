@@ -1,12 +1,11 @@
 import random
 import time
-from datetime import timezone, datetime
-
-from flask import Blueprint, request, jsonify, g
+from datetime import datetime, timezone
 
 import game_sessions
 from auth import login_required
-from models import db, TypingText, GameSession
+from flask import Blueprint, g, jsonify, request
+from models import GameSession, TypingText, db
 
 GAME_ID = "typing"
 MODES = ("bot", "practice")
@@ -63,7 +62,8 @@ def start():
     state = {
         "mode": mode,
         "difficulty": difficulty,
-        "text": chosen_text,
+        "text_id": chosen_text.id,
+        "text": chosen_text.text,
         "started_at": current_time(),
         "bot_wpm": bot_wpm,
     }
@@ -125,5 +125,5 @@ def finish():
 
     final_state = dict(state)
     final_state["result"] = result
-    game_sessions.finish(session, final_state, points, state["difficulty"], details=details)
+    game_sessions.finish(session, final_state, points, state["difficulty"], details=details, save=(state["mode"] == "bot"))
     return jsonify(result)

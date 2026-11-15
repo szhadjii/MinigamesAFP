@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gépelős játék</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="typing.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+  <header>
+    <a href="/">Játékgyűjtemény</a>
+    <div>
+      <button id="theme-btn" type="button">Sötét mód</button>
+      <span>Bejelentkezve: <b id="username"></b></span>
+      <button id="logout-btn" type="button">Kijelentkezés</button>
+    </div>
+  </header>
+
+  <main>
+    <h1>Gépelős játék</h1>
+
+    <div class="settings">
+      <label for="mode">Mód:</label>
+      <select id="mode">
+        <option value="bot">Gép ellen</option>
+        <option value="practice">Gyakorlás</option>
+      </select>
+
+      <span id="difficulty-box">
+        <label for="difficulty">Nehézség:</label>
+        <select id="difficulty">
+          <option value="slow">Lassú</option>
+          <option value="medium" selected>Közepes</option>
+          <option value="fast">Gyors</option>
+        </select>
+      </span>
+
+      <button id="new-round-btn" type="button" class="primary">Új kör</button>
+    </div>
+
+    <p id="message" aria-live="polite"></p>
+
+    <div id="game" hidden>
+      <div id="text" class="typing-text"></div>
+
+      <label for="typing-input">Ide gépelj:</label>
+      <input id="typing-input" type="text" autocomplete="off" autocorrect="off"
+             autocapitalize="off" spellcheck="false" disabled>
+
+      <div class="progress-row">
+        <span class="name">Te</span>
+        <div class="bar"><div id="player-bar" class="fill"></div></div>
+        <span id="player-count" class="count"></span>
+      </div>
+      <div id="bot-row" class="progress-row" hidden>
+        <span class="name">Gép</span>
+        <div class="bar"><div id="bot-bar" class="fill bot"></div></div>
+        <span id="bot-count" class="count"></span>
+      </div>
+    </div>
+
+    <p id="error" class="error" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <p id="result-text"></p>
+      <table class="result-table">
+        <tr><td>Eltelt idő</td><td id="r-time"></td></tr>
+        <tr><td>Sebesség</td><td id="r-wpm"></td></tr>
+        <tr><td>Pontosság</td><td id="r-accuracy"></td></tr>
+        <tr><td>Pont</td><td id="r-points"></td></tr>
+      </table>
+      <button id="again-btn" type="button" class="primary">Új kör</button>
+    </div>
+
+    <h2>Top 3</h2>
+    <div id="top3"></div>
+  </main>
+
+  <script src="common.js"></script>
+  <script src="typing.js"></script>
+</body>
+</html>

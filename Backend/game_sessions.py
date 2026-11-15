@@ -23,12 +23,12 @@ def save_state(session, state):
     session.state = state
     db.session.commit()
 
-def finish(session, state, points=None, difficulty=None, details=None):
+def finish(session, state, points=None, difficulty=None, details=None, save=True):
     if session.status != "active":
         raise ValueError("A játék már lezárult.")
     session.state = state
     session.status = "finished"
     session.finished_at = utcnow()
-    if points is not None:
+    if points is not None and save:
         save_score(session.user_id, session.game, points, difficulty, details)
     db.session.commit()

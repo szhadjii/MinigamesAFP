@@ -16,7 +16,7 @@ const games = [
     id: "typing",
     name: "Gépelős játék",
     description: "Írd be a szöveget minél gyorsabban és pontosabban.",
-    page: null,
+    page: "typing.html",
   },
   {
     id: "memory",

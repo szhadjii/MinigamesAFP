@@ -4,8 +4,8 @@ from auth import login_required
 from models import User, Score, db
 
 bp = Blueprint('scores', __name__, url_prefix='/scores')
-GAMES = "tictactoe"
-SUMPOINT_GAMES = "tictactoe"
+GAMES = ("tictactoe", "typing")
+SUMPOINT_GAMES = ("tictactoe",)
 
 def save_score(user_id, game, points, difficulty=None, details=None, commit=True):
     score = Score(user_id=user_id, game=game, points=points, difficulty=difficulty, details=details)

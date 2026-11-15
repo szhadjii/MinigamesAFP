@@ -288,3 +288,8 @@ ol {
   .board.size5 { grid-template-columns: repeat(5, 56px); }
   .size5 .cell { width: 56px; height: 56px; font-size: 26px; }
 }
+
+/* A hidden attribútum minden elemnél rejtsen el (az osztályok display értéke ne írja felül) */
+[hidden] {
+  display: none !important;
+}
