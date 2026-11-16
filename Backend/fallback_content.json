@@ -1,0 +1,33 @@
+{
+  "hangman": {
+    "easy": ["alma", "körte", "ablak", "kutya", "macska", "szék", "autó", "labda", "virág", "folyó"],
+    "medium": ["könyvtár", "villamos", "szekrény", "bicikli", "játszótér", "nyomtató", "fagylalt", "kalapács"],
+    "hard": ["számítógép", "billentyűzet", "vasútállomás", "hűtőszekrény", "villanyszerelő", "gyógyszertár", "földrengés", "programozás"]
+  },
+  "typing": {
+    "easy": [
+      "A kutya a kertben játszik a labdával. Délután a gyerekek is kimennek, és együtt futkároznak a fűben.",
+      "Reggel korán keltem, és megittam egy bögre meleg tejet. Aztán elindultam az iskolába a barátommal."
+    ],
+    "medium": [
+      "A könyvtár a város közepén áll, és minden hétköznap nyitva tart. Sokan járnak oda tanulni, mert csendes, világos, és a polcokon rengeteg érdekes könyv sorakozik.",
+      "Hétvégén kirándulni mentünk a közeli hegyekbe. Az út elején még esett az eső, de dél felé kisütött a nap, és a kilátóból gyönyörű volt a völgy."
+    ],
+    "hard": [
+      "A szoftverfejlesztés nemcsak programozásból áll: a követelmények összegyűjtése, a tervezés, a tesztelés és a dokumentálás ugyanolyan fontos. Egy jól tesztelt rendszerben kevesebb a hiba, ezért a felhasználók is elégedettebbek.",
+      "2026 őszén a csapat hetente egyszer egyeztetett, hogy átbeszéljék a feladatokat (például a bejelentkezést és a pontszámok mentését). Mindenki vállalt egy részt, és a határidő előtt két nappal kész lett a legtöbb funkció."
+    ]
+  },
+  "quiz": [
+    {"question": "Mi Magyarország fővárosa?", "options": ["Budapest", "Debrecen", "Szeged", "Pécs"], "correct_index": 0},
+    {"question": "Melyik a Föld legnagyobb óceánja?", "options": ["Atlanti-óceán", "Csendes-óceán", "Indiai-óceán", "Északi-sarki-óceán"], "correct_index": 1},
+    {"question": "Melyik a Naprendszer legnagyobb bolygója?", "options": ["Szaturnusz", "Föld", "Jupiter", "Neptunusz"], "correct_index": 2},
+    {"question": "Mi a víz kémiai képlete?", "options": ["CO2", "NaCl", "O2", "H2O"], "correct_index": 3},
+    {"question": "Ki festette a Mona Lisát?", "options": ["Michelangelo", "Leonardo da Vinci", "Raffaello", "Rembrandt"], "correct_index": 1},
+    {"question": "Melyik folyó folyik át Budapesten?", "options": ["Tisza", "Dráva", "Duna", "Rába"], "correct_index": 2},
+    {"question": "Hány napból áll egy közönséges (nem szökő) év?", "options": ["365", "360", "366", "364"], "correct_index": 0},
+    {"question": "Melyik kémiai elem vegyjele az Au?", "options": ["Ezüst", "Alumínium", "Réz", "Arany"], "correct_index": 3},
+    {"question": "Melyik országban található a Colosseum?", "options": ["Görögország", "Olaszország", "Spanyolország", "Franciaország"], "correct_index": 1},
+    {"question": "Ki írta az Egri csillagokat?", "options": ["Jókai Mór", "Mikszáth Kálmán", "Gárdonyi Géza", "Móricz Zsigmond"], "correct_index": 2}
+  ]
+}
