@@ -17,7 +17,7 @@ def get_current(user_id, game):
     )
 
 def get_active(user_id, game):
-    return GameSession.query.filter(user_id=user_id, game=game, status="active").first()
+    return GameSession.query.filter_by(user_id=user_id, game=game, status="active").first()
 
 def save_state(session, state):
     session.state = state

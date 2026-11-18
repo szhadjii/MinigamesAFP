@@ -3,9 +3,10 @@ import time
 from datetime import datetime, timezone
 
 import game_sessions
+import content_pool
 from auth import login_required
 from flask import Blueprint, g, jsonify, request
-from models import GameSession, TypingText, db
+from models import GameSession, db
 
 GAME_ID = "typing"
 MODES = ("bot", "practice")
@@ -53,10 +54,9 @@ def start():
     if mode == "bot" and difficulty not in BOT_WPM:
         return jsonify({"error": "Érvénytelen kérés."}), 400
 
-    texts = TypingText.query.filter_by(is_active=True).all()
-    if not texts:
+    chosen_text = content_pool.pick_typing_text(g.user.id)
+    if chosen_text is None:
         return jsonify({"error": "Jelenleg nincs elérhető tartalom."}), 503
-    chosen_text = random.choice(texts)
 
     bot_wpm = choose_bot_wpm(difficulty) if mode == "bot" else None
     state = {

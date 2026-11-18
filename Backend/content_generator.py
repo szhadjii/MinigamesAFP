@@ -1,4 +1,10 @@
 """
+LLM-based content generation for the minigames project:
+  - hangman words
+  - typing game texts
+  - quiz questions (with answers)
+
+
 Environment variables
   LLM_PROVIDER      "anthropic" | "openai" | "none" (default: none -> fallback only)
                     "openai" means any OpenAI-compatible chat completions API:
@@ -34,8 +40,7 @@ import re
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-from this import d
-from typing import Any, Callable, Dict, list, Optional
+from typing import Any, Callable, Dict, List, Optional  # noqa: UP035
 
 import requests
 
@@ -112,7 +117,7 @@ class LLMError(Exception):
 class GenerationResult:
     """items: the generated content. source: 'llm', 'mixed' or 'fallback'."""
 
-    items: list[Any]
+    items: List[Any]
     source: str
 
 
@@ -153,7 +158,7 @@ class AnthropicProvider(LLMProvider):
         self.max_tokens = max_tokens
 
     def complete(self, system: str, prompt: str) -> str:
-        payload: dict[str, Any] = {
+        payload: Dict[str, Any] = {
             "model": self.model,
             "max_tokens": self.max_tokens,
             "system": system,
@@ -183,7 +188,7 @@ class OpenAICompatibleProvider(LLMProvider):
         self.temperature = temperature
 
     def complete(self, system: str, prompt: str) -> str:
-        payload: dict[str, Any] = {
+        payload: Dict[str, Any] = {
             "model": self.model,
             "messages": [
                 {"role": "system", "content": system},
@@ -304,7 +309,7 @@ def _extract_json(raw: str) -> Dict[str, Any]:
 
 
 @lru_cache(maxsize=1)
-def _load_fallback() -> dict[str, Any]:
+def _load_fallback() -> Dict[str, Any]:
     try:
         with FALLBACK_PATH.open(encoding="utf-8") as fh:
             return json.load(fh)
@@ -315,12 +320,12 @@ def _load_fallback() -> dict[str, Any]:
 
 def _collect_from_llm(
     *,
-    build_prompt: Callable[[int, list[str]], str],
-    parse: Callable[[str], list[Any]],
+    build_prompt: Callable[[int, List[str]], str],
+    parse: Callable[[str], List[Any]],
     key_fn: Callable[[Any], str],
     needed: int,
-    exclude: list[str],
-) -> list[Any]:
+    exclude: List[str],
+) -> List[Any]:
     """Ask the LLM (with retries) until `needed` valid, unique items are collected."""
     provider = get_provider()
     if provider is None:
@@ -328,7 +333,7 @@ def _collect_from_llm(
 
     attempts = _clamp(int(os.getenv("LLM_MAX_ATTEMPTS", "3")), 1, 10)
     seen = {_norm(e) for e in exclude}
-    collected: list[Any] = []
+    collected: List[Any] = []
 
     for attempt in range(1, attempts + 1):
         missing = needed - len(collected)
@@ -352,11 +357,11 @@ def _collect_from_llm(
 
 
 def _with_fallback(
-    llm_items: list[Any],
+    llm_items: List[Any],
     needed: int,
-    fallback_pool: list[Any],
+    fallback_pool: List[Any],
     key_fn: Callable[[Any], str],
-    exclude: list[str],
+    exclude: List[str],
 ) -> GenerationResult:
     items = list(llm_items)
     source = "llm"
@@ -373,7 +378,7 @@ def _with_fallback(
     return GenerationResult(items=items, source=source)
 
 
-def _avoid_line(avoid: list[str]) -> str:
+def _avoid_line(avoid: List[str]) -> str:
     return f"Ezeket NE használd: {', '.join(avoid)}.\n" if avoid else ""
 
 
@@ -386,7 +391,7 @@ def _variation_line() -> str:
 # --------------------------------------------------------------------------- #
 
 
-def _parse_hangman(raw: str, difficulty: str) -> list[str]:
+def _parse_hangman(raw: str, difficulty: str) -> List[str]:
     words = _extract_json(raw).get("words")
     if not isinstance(words, list):
         raise LLMError("Missing 'words' list")
@@ -405,7 +410,7 @@ def generate_hangman_words(
     topic: Optional[str] = None,
     difficulty: str = "medium",
     count: int = 10,
-    exclude: Optional[list[str]] = None,
+    exclude: Optional[List[str]] = None,
 ) -> GenerationResult:
     """Return `count` validated lowercase Hungarian words for hangman."""
     difficulty = _check_difficulty(difficulty)
@@ -414,7 +419,7 @@ def generate_hangman_words(
     exclude = list(exclude or [])
     low, high = HANGMAN_LENGTHS[difficulty]
 
-    def build_prompt(missing: int, avoid: list[str]) -> str:
+    def build_prompt(missing: int, avoid: List[str]) -> str:
         return (
             f"Generálj {missing} különböző magyar szót akasztófa játékhoz.\n"
             f"Téma: {topic}\n"
@@ -445,7 +450,7 @@ def _clean_typing_text(text: str) -> str:
     return " ".join(text.translate(_TYPO_MAP).split())
 
 
-def _parse_typing(raw: str, target_len: int) -> list[str]:
+def _parse_typing(raw: str, target_len: int) -> List[str]:
     texts = _extract_json(raw).get("texts")
     if not isinstance(texts, list):
         raise LLMError("Missing 'texts' list")
@@ -464,7 +469,7 @@ def generate_typing_texts(
     difficulty: str = "medium",
     count: int = 1,
     topic: Optional[str] = None,
-    exclude: Optional[list[str]] = None,
+    exclude: Optional[List[str]] = None,
 ) -> GenerationResult:
     """Return `count` validated, easily typeable Hungarian texts."""
     difficulty = _check_difficulty(difficulty)
@@ -473,7 +478,7 @@ def generate_typing_texts(
     exclude = list(exclude or [])
     target = TYPING_TARGET_LENGTH[difficulty]
 
-    def build_prompt(missing: int, avoid: list[str]) -> str:
+    def build_prompt(missing: int, avoid: List[str]) -> str:
         avoid = [a[:40] for a in avoid]
         return (
             f"Írj {missing} különböző, eredeti, természetesen hangzó magyar szöveget gépelésgyakorláshoz.\n"
@@ -504,7 +509,7 @@ def generate_typing_texts(
 # --------------------------------------------------------------------------- #
 
 
-def _parse_quiz(raw: str) -> list[Dict[str, Any]]:
+def _parse_quiz(raw: str) -> List[Dict[str, Any]]:
     questions = _extract_json(raw).get("questions")
     if not isinstance(questions, list):
         raise LLMError("Missing 'questions' list")
@@ -540,7 +545,7 @@ def generate_quiz(
     topic: Optional[str] = None,
     difficulty: str = "medium",
     count: int = 10,
-    exclude: Optional[list[str]] = None,
+    exclude: Optional[List[str]] = None,
 ) -> GenerationResult:
     """
     Return `count` validated multiple-choice questions:
@@ -553,7 +558,7 @@ def generate_quiz(
     topic = sanitize_topic(topic, default="általános műveltség")
     exclude = list(exclude or [])
 
-    def build_prompt(missing: int, avoid: list[str]) -> str:
+    def build_prompt(missing: int, avoid: List[str]) -> str:
         avoid = [a[:80] for a in avoid]
         return (
             f"Készíts {missing} különböző magyar nyelvű feleletválasztós kvízkérdést.\n"

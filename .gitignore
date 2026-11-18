@@ -39,3 +39,4 @@ Thumbs.db
 .idea/
 Backend/Games/__pycache__/
 Backend/__pycache__/
+Backend/.env

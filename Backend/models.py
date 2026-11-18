@@ -100,3 +100,11 @@ class TypingText(db.Model):
             "text": self.text,
             "is_active": self.is_active
         }
+
+class QuizQuestion(db.Model):
+    __tablename__ = "quiz_questions"
+    id = db.Column(db.Integer, primary_key=True)
+    question = db.Column(db.String(200), nullable=False)
+    options = db.Column(db.JSON, nullable=False)
+    correct_index = db.Column(db.Integer, nullable=False)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
