@@ -425,9 +425,11 @@ def generate_hangman_words(
             f"Téma: {topic}\n"
             f"Nehézség: {_DIFFICULTY_HINT[difficulty]} szavak.\n"
             f"Hossz: {low}-{high} betű. Csak egyszavas köznevek legyenek, csupa kisbetűvel, "
-            "szóköz, kötőjel, szám és tulajdonnév nélkül. Az ékezetes betűk megengedettek.\n"
+            "szóköz, kötőjel, szám és tulajdonnév nélkül.\n"
+            "FONTOS: a szavakat helyes magyar helyesírással, ékezetekkel írd (pl. szőlő, nyúl, hűtő). "
+            "Az ékezet nélküli alak (szolo, nyul, huto) hibás, és nem fogadjuk el.\n"
             f"{_avoid_line(avoid)}{_variation_line()}"
-            'Válasz formátuma: {"words": ["szo1", "szo2"]}'
+            'Válasz formátuma: {"words": ["szó1", "szó2"]}'
         )
 
     llm_items = _collect_from_llm(
@@ -596,6 +598,12 @@ def public_quiz_view(question: Dict[str, Any]) -> Dict[str, Any]:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
+    try:  # the Flask app loads .env itself; for this standalone test we do it here
+        from dotenv import load_dotenv
+
+        load_dotenv()
+    except ImportError:
+        logger.warning("python-dotenv is not installed; .env is not loaded.")
     print("Provider:", type(get_provider()).__name__ if get_provider() else "none (fallback only)")
 
     res = generate_hangman_words("állatok", "easy", 5)
