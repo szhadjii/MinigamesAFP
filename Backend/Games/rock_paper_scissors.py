@@ -1,9 +1,8 @@
 import random
 
-from flask import Blueprint, jsonify, request, g
-
-import game_sessions
+from game_sessions
 from auth import login_required
+from flask import Blueprint, g, jsonify, request
 from models import GameSession, db
 
 bp = Blueprint('rps', __name__, url_prefix='/rps')
@@ -12,8 +11,8 @@ GAME = "rps"
 ROUNDS = 5
 POINTS_WIN = 10
 POINTS_DRAW = 3
-MOVES = ("rock", "paper", "scissors")                       # kő, papír, olló
-BEATS = {"rock": "scissors", "paper": "rock", "scissors": "paper"}  # kulcs legyőzi az értéket
+MOVES = ("rock", "paper", "scissors")
+BEATS = {"rock": "scissors", "paper": "rock", "scissors": "paper"}
 
 
 def public_state(state):

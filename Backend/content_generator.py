@@ -65,7 +65,7 @@ __all__ = [
 DIFFICULTIES = ("easy", "medium", "hard")
 
 HANGMAN_LENGTHS = {"easy": (4, 6), "medium": (7, 9), "hard": (10, 14)}
-TYPING_TARGET_LENGTH = {"easy": 120, "medium": 220, "hard": 350}
+TYPING_TARGET_LENGTH = {"easy": 75, "medium": 150, "hard": 250}
 
 _HANGMAN_RE = re.compile(r"^[a-záéíóöőúüű]+$")
 _TYPING_RE = re.compile(r"^[A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű0-9 .,;:!?()'\"\-]+$")
