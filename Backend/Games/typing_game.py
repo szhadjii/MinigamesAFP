@@ -54,22 +54,21 @@ def start():
     if mode == "bot" and difficulty not in BOT_WPM:
         return jsonify({"error": "Érvénytelen kérés."}), 400
 
-    chosen_text = content_pool.pick_typing_text(g.user.id)
-    if chosen_text is None:
+    text = content_pool.pick_typing_text()
+    if text is None:
         return jsonify({"error": "Jelenleg nincs elérhető tartalom."}), 503
 
     bot_wpm = choose_bot_wpm(difficulty) if mode == "bot" else None
     state = {
         "mode": mode,
         "difficulty": difficulty,
-        "text_id": chosen_text.id,
-        "text": chosen_text.text,
+        "text": text,
         "started_at": current_time(),
         "bot_wpm": bot_wpm,
     }
     session = game_sessions.start(g.user.id, GAME_ID, state)
 
-    body = {"session_id": session.id, "text": chosen_text.text}
+    body = {"session_id": session.id, "text": text}
     if mode == "bot":
         body["bot_wpm"] = bot_wpm
     return jsonify(body)

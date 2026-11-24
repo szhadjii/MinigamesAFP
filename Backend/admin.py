@@ -58,7 +58,7 @@ def delete_user(user_id):
 @bp.route('/scores', methods=['GET'])
 @admin_required
 def list_scores():
-    query = Score.query.all()
+    query = Score.query
     game = request.args.get('game')
     user_id = request.args.get('user_id', type=int)
     if game is not None:
@@ -97,90 +97,6 @@ def delete_scores():
     db.session.commit()
     return jsonify({"deleted": deleted}), 200
 
-# Stringek ----------------------------------------------------------------------------------------
-
-def is_valid_word(text):
-    return text.isalpha() and len(text) <= 30
-
-def is_valid_text(text):
-    return 10 <= len(text) <= 1000
-
-CONTENT = {
-    "words": (Word, is_valid_word, "A szó csak betűkből álljon (legfeljebb 30 karakter)."),
-    "texts": (TypingText, is_valid_text, "A szöveg 10-1000 karakter legyen.")
-}
-
-def read_text(data, kind):
-    text = data.get("text")
-    if not isinstance(text, str):
-        return None
-    text = text.strip()
-    is_valid = CONTENT[kind][1]
-    if not is_valid(text):
-        return None
-    return text.lower() if kind == "words" else text
-
-@bp.route('/<kind>', methods=['GET'])
-@admin_required
-def list_contents(kind):
-    if kind not in CONTENT:
-        return jsonify({"error": "Nincs ilyen végpont."}), 404
-    model = CONTENT[kind][0]
-    # noinspection unresolved-references
-    return jsonify([item.to_string() for item in model.query.order_by(model.id).all()])
-
-@bp.route('/<kind>', methods=['POST'])
-@admin_required
-def add_content(kind):
-    if kind not in CONTENT:
-        return jsonify({"error": "Nincs ilyen végpont."}), 404
-    model = CONTENT[kind][0]
-    message = CONTENT[kind][2]
-    text = read_text(request.get_json(silent=True) or {}, kind)
-    if text is None:
-        return jsonify({"error": message}), 400
-    item = model(text=text)
-    db.session.add(item)
-    db.session.commit()
-    # noinspection unresolved-references
-    return jsonify({item.to_string}), 201
-
-@bp.route('/<kind>/<int:item_id>', methods=['PATCH'])
-@admin_required
-def update_content(kind, item_id):
-    if kind not in CONTENT:
-        return jsonify({"error": "Nincs ilyen végpont."}), 404
-    model = CONTENT[kind][0]
-    message = CONTENT[kind][2]
-    item = db.session.get(model, item_id)
-    if item is None:
-        return jsonify({"error": "Nincs ilyen elem."}), 404
-    data = request.get_json(silent=True) or {}
-    if "text" in data:
-        text = read_text(data, kind)
-        if text is None:
-            return jsonify({"error": message}), 400
-        item.text = text
-    if "is_active" in data:
-        if not isinstance(data["is_active"], bool):
-            return jsonify({"error": "Az is_active értéke csak igaz/hamis lehet."}), 400
-        item.is_active = data["is_active"]
-
-    db.session.commit()
-    return jsonify({item.to_string}), 200
-
-@bp.route('/<kind>/<int:item_id>', methods=['DELETE'])
-@admin_required
-def delete_content(kind, item_id):
-    if kind not in CONTENT:
-        return jsonify({"error": "Nincs ilyen végpont."}), 404
-    model = CONTENT[kind][0]
-    item = db.session.get(model, item_id)
-    if item is None:
-        return jsonify({"error": "Nincs ilyen elem."}), 404
-    db.session.delete(item)
-    db.session.commit()
-    return jsonify({"message": "Nincs ilyen elem."}), 200
 
 # Statisztika -------------------------------------------------------------------------------
 @bp.route('/stats', methods=['GET'])
@@ -198,8 +114,3 @@ def get_stats():
         }
 
     return jsonify({"games": games, "users": {"total": User.query.count()}}), 200
-
-
-
-
-
