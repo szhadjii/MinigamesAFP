@@ -1,0 +1,58 @@
+.status {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.moves {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.moves button {
+  flex: 1;
+  padding: 18px 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.last-round {
+  min-height: 1.6em;
+  font-size: 17px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--box);
+  border: 1px solid var(--border);
+  margin-bottom: 14px;
+}
+
+.data-table th,
+.data-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.data-table th {
+  background: var(--button);
+  font-size: 14px;
+}
+
+.data-table td.win {
+  color: var(--info-text);
+  font-weight: bold;
+}
+
+.data-table td.loss {
+  color: var(--error-text);
+}
+
+.result .note,
+.note {
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: normal;
+}

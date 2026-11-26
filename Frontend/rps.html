@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kő-papír-olló</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="rps.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+  <header>
+    <a href="/">Játékgyűjtemény</a>
+    <div>
+      <button id="theme-btn" type="button">Sötét mód</button>
+      <span>Bejelentkezve: <b id="username"></b></span>
+      <button id="logout-btn" type="button">Kijelentkezés</button>
+    </div>
+  </header>
+
+  <main>
+    <h1>Kő-papír-olló</h1>
+
+    <div id="start-box" class="settings" hidden>
+      <p>Öt körös meccs a gép ellen. Győzelem: 10 pont, döntetlen: 3 pont, vereség: 0 pont.</p>
+      <button id="new-match-btn" type="button" class="primary">Új meccs</button>
+    </div>
+
+    <div id="match" hidden>
+      <p id="status" class="status"></p>
+
+      <div id="moves" class="moves">
+        <button type="button" data-move="rock">Kő</button>
+        <button type="button" data-move="paper">Papír</button>
+        <button type="button" data-move="scissors">Olló</button>
+      </div>
+
+      <p id="last-round" class="last-round"></p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>Kör</th><th>Te</th><th>Gép</th><th>Eredmény</th></tr>
+        </thead>
+        <tbody id="history"></tbody>
+      </table>
+    </div>
+
+    <p id="error" class="error" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <p id="result-text"></p>
+      <p id="result-stats" class="note"></p>
+      <button id="again-btn" type="button" class="primary">Új meccs</button>
+    </div>
+
+    <h2>Top 3</h2>
+    <div id="top3"></div>
+  </main>
+
+  <script src="common.js"></script>
+  <script src="rps.js"></script>
+</body>
+</html>
