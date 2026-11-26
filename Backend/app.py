@@ -8,7 +8,7 @@ import auth
 # import Games.hangman
 # import Games.number_guess
 import scores
-from Games import tictactoe, typing_game
+from Games import tictactoe, typing_game, rock_paper_scissors
 from models import db
 from seed import seed_database
 from dotenv import load_dotenv
@@ -36,6 +36,7 @@ def create_app(test_config=None):
     app.register_blueprint(admin.bp)
     app.register_blueprint(tictactoe.bp)
     app.register_blueprint(typing_game.bp)
+    app.register_blueprint(rock_paper_scissors.bp)
     # app.register_blueprint(hangman.bp)
     # app.register_blueprint(number_guess.bp)
 

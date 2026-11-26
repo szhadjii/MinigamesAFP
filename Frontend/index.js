@@ -30,6 +30,12 @@ const games = [
     description: "Találd ki a gondolt számot minél kevesebb tippből.",
     page: null,
   },
+  {
+    id: "rps",
+    name: "Kő-papír-olló",
+    description: "Öt körös meccs a gép ellen. Győzelem 10, döntetlen 3 pont.",
+    page: "rps.html",
+  },
 ];
 
 const errorEl = document.getElementById("error");
