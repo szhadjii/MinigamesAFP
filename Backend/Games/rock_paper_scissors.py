@@ -1,9 +1,11 @@
+"""Kő-papír-olló: öt körös meccs a gép ellen.
+A gép lépését és az eredményt mindig a szerver állapítja meg, a meccs végén egy pontszám mentődik."""
 import random
 
-from game_sessions
-from auth import login_required
 from flask import Blueprint, g, jsonify, request
-from models import GameSession, db
+
+import game_sessions
+from auth import login_required
 
 bp = Blueprint('rps', __name__, url_prefix='/rps')
 
@@ -15,6 +17,20 @@ MOVES = ("rock", "paper", "scissors")
 BEATS = {"rock": "scissors", "paper": "rock", "scissors": "paper"}
 
 
+def computer_move():
+    """A gép véletlenszerű lépése. Külön függvény, hogy a tesztekben le lehessen cserélni."""
+    return random.choice(MOVES)
+
+
+def judge(player, computer):
+    """Egy kör eredménye: (kimenet, megszerzett pont)."""
+    if player == computer:
+        return "draw", POINTS_DRAW
+    if BEATS[player] == computer:
+        return "win", POINTS_WIN
+    return "loss", 0
+
+
 def public_state(state):
     return {"round": state["round"], "total": ROUNDS,
             "score": state["points"], "history": state["history"]}
@@ -23,10 +39,8 @@ def public_state(state):
 @bp.route('/start', methods=['POST'])
 @login_required
 def start():
-    GameSession.abandon_active(g.user.id, GAME)
-    db.session.commit()
     state = {"round": 0, "points": 0, "history": []}
-    game_sessions.start(g.user.id, GAME, state)
+    game_sessions.start(g.user.id, GAME, state)  # az előző, félbehagyott meccset megszakítja
     return jsonify(public_state(state)), 201
 
 
@@ -50,13 +64,8 @@ def play():
     if move not in MOVES:
         return jsonify({"error": "A move értéke rock, paper vagy scissors lehet."}), 400
 
-    computer = random.choice(MOVES)
-    if move == computer:
-        outcome, gained = "draw", POINTS_DRAW
-    elif BEATS[move] == computer:
-        outcome, gained = "win", POINTS_WIN
-    else:
-        outcome, gained = "loss", 0
+    computer = computer_move()
+    outcome, gained = judge(move, computer)
 
     state = dict(session.state)
     state["round"] += 1
@@ -67,9 +76,10 @@ def play():
                 "gained": gained, "round": state["round"], "total": ROUNDS, "score": state["points"]}
 
     if state["round"] >= ROUNDS:
-        counts = {k: sum(1 for h in state["history"] if h["outcome"] == k) for k in ("win", "draw", "loss")}
+        counts = {k: sum(1 for entry in state["history"] if entry["outcome"] == k)
+                  for k in ("win", "draw", "loss")}
         game_sessions.finish(session, state, points=state["points"], details=counts)
-        response.update(finished=True, points=state["points"], **{"stats": counts})
+        response.update(finished=True, points=state["points"], stats=counts)
     else:
         game_sessions.save_state(session, state)
         response["finished"] = False
