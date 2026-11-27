@@ -19,9 +19,9 @@ const games = [
     page: "typing.html",
   },
   {
-    id: "memory",
-    name: "Memóriajáték",
-    description: "Találd meg a kártyapárokat minél kevesebb hibával.",
+    id: "quiz",
+    name: "Kvíz",
+    description: "Találd ki a kérdésekre a választ.",
     page: null,
   },
   {
