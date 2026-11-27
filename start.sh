@@ -16,8 +16,24 @@ else
     exit 1
 fi
 
+# Sajat virtualis kornyezet (PEP 668 miatt a rendszer Pythonjara nem lehet telepiteni)
+VENV="$ROOT/.venv"
+VENV_PY="$VENV/bin/python"
+
+if [ ! -x "$VENV_PY" ]; then
+    echo "Virtualis kornyezet letrehozasa..."
+    rm -rf "$VENV"
+    if ! "$PYCMD" -m venv "$VENV"; then
+        echo ""
+        echo "Nem sikerult letrehozni a virtualis kornyezetet."
+        echo "Debian/Ubuntu alatt telepitsd: sudo apt install python3-venv"
+        read -p "Nyomj Entert a kilepeshez..."
+        exit 1
+    fi
+fi
+
 echo "Fuggosegek ellenorzese / telepitese..."
-if ! "$PYCMD" -m pip install -r "$ROOT/requirements.txt" --quiet; then
+if ! "$VENV_PY" -m pip install -r "$ROOT/requirements.txt" --quiet; then
     echo ""
     echo "Hiba tortent a csomagok telepitese kozben."
     echo "Ellenorizd az internetkapcsolatot, majd probald ujra."
@@ -34,10 +50,10 @@ fi
     fi
 ) &
 
-echo "Jatekgyujtemeny inditasa ($PYCMD)..."
+echo "Jatekgyujtemeny inditasa..."
 echo "Ha hiba van, a hibauzenet itt lathato lesz."
 echo ""
-"$PYCMD" app.py
+"$VENV_PY" app.py
 
 echo ""
 echo "A szerver leallt."
