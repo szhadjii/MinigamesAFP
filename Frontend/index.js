@@ -10,8 +10,9 @@ const games = [
     id: "hangman",
     name: "Akasztófa",
     description: "Találd ki a szót, mielőtt elfogynak a próbálkozásaid.",
-    page: null,
+    page: "hangman.html",
   },
+  
   {
     id: "typing",
     name: "Gépelős játék",
@@ -19,9 +20,9 @@ const games = [
     page: "typing.html",
   },
   {
-    id: "quiz",
-    name: "Kvíz",
-    description: "Találd ki a kérdésekre a választ.",
+    id: "memory",
+    name: "Memóriajáték",
+    description: "Találd meg a kártyapárokat minél kevesebb hibával.",
     page: null,
   },
   {
