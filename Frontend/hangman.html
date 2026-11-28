@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akasztófa | Minigames</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HANGMAN <span class="accent">PRO.</span></h1>
+            <a href="index.html" class="btn-secondary">← Vissza a főoldalra</a>
+        </header>
+
+        <main>
+            <div class="controls">
+                <label for="difficulty">Nehézség:</label>
+                <select id="difficulty">
+                    <option value="easy">Könnyű</option>
+                    <option value="medium" selected>Közepes</option>
+                    <option value="hard">Nehéz</option>
+                </select>
+                <button id="start-btn" class="btn-primary" onclick="startGame()">Új játék indítása</button>
+            </div>
+
+            <div id="game-content" style="display: none;">
+                <p id="hint" class="hint"></p>
+                <p id="word-display" class="word-display">_ _ _ _ _</p>
+                <p id="message" class="message"></p>
+                <p id="mistakes" class="mistakes">Hibák: 0 / 6</p>
+                <div id="keyboard" class="keyboard"></div>
+            </div>
+        </main>
+    </div>
+    <script src="hangman.js"></script>
+</body>
+</html>
