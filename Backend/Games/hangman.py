@@ -7,23 +7,23 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from content_pool import pick_hangman_word
 
-hangman_bp = Blueprint('hangman', __name__)
+bp = Blueprint('hangman', __name__)
 
 # Játékállapotok memóriában
 hangman_sessions = {}
 
-@hangman_bp.route("/api/hangman/start", methods=["POST"])
+@bp.route("/api/hangman/start", methods=["POST"])
 def start_game():
     difficulty = request.args.get("difficulty", "medium")
-    
+
     # A content_pool-ból kérjük a szót (ez hívja az LLM-et vagy a fallbacket)
     word = pick_hangman_word(difficulty=difficulty)
-    
+
     if not word:
         return jsonify({"error": "Nincs elérhető szó a készletben."}), 503
 
     session_id = str(uuid.uuid4())
-    
+
     # Játékállapot inicializálása
     hangman_sessions[session_id] = {
         "word": word.upper(),
@@ -43,7 +43,7 @@ def start_game():
     })
 
 
-@hangman_bp.route("/api/hangman/guess", methods=["POST"])
+@bp.route("/api/hangman/guess", methods=["POST"])
 def guess_letter():
     session_id = request.args.get("sessionId")
     letter = request.args.get("letter", "").upper()
@@ -52,7 +52,7 @@ def guess_letter():
         return jsonify({"error": "Nincs ilyen játék."}), 404
 
     state = hangman_sessions[session_id]
-    
+
     if state["finished"]:
         return jsonify({"error": "A játék már véget ért."}), 400
 

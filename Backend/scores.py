@@ -4,7 +4,7 @@ from auth import login_required
 from models import User, Score, db
 
 bp = Blueprint('scores', __name__, url_prefix='/scores')
-GAMES = ("tictactoe", "typing", "rps")
+GAMES = ("tictactoe", "typing", "rps", "hangman")
 SUMPOINT_GAMES = ("tictactoe",)
 
 def save_score(user_id, game, points, difficulty=None, details=None, commit=True):
@@ -52,4 +52,3 @@ def my_score():
         query = query.filter_by(game=game)
     rows = query.order_by(Score.id.desc()).all()
     return jsonify([row.to_dict() for row in rows])
-

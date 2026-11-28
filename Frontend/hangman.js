@@ -1,6 +1,6 @@
 let sessionId = null;
 const hungarianAlphabet = "AÁBCDEÉFGHIÍJKLMNOÓÖŐPQRSTUÚÜŰVWXYZ";
-const API_BASE = "http://localhost:5000/api/hangman"; // Ha a Flask más porton fut, írd át!
+const API_BASE = "/api/hangman"; // Ha a Flask más porton fut, írd át!
 
 async function startGame() {
     document.getElementById('game-content').style.display = 'block';
@@ -12,7 +12,8 @@ async function startGame() {
 
     try {
         const res = await fetch(`${API_BASE}/start?difficulty=${difficulty}`, { method: 'POST' });
-        const data = await res.json();
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
 
         if (!res.ok) throw new Error(data.error || 'Hiba a játék indításakor.');
 
@@ -21,7 +22,7 @@ async function startGame() {
         document.getElementById('mistakes').textContent = `Hibák: 0 / ${data.maxMistakes}`;
         document.getElementById('word-display').textContent = "_ ".repeat(data.wordLength).trim();
         document.getElementById('keyboard').innerHTML = ''; // Töröljük a régit
-        
+
         renderKeyboard();
         document.getElementById('message').textContent = 'Válassz egy betűt!';
         document.getElementById('message').style.color = '#69E3CC';
@@ -48,17 +49,18 @@ async function guess(letter, btn) {
     btn.disabled = true;
 
     try {
-        const res = await fetch(`${API_BASE}/guess?sessionId=${sessionId}&letter=${letter}`, {
+        const res = await fetch(`${API_BASE}/guess?sessionId=${sessionId}&letter=${encodeURIComponent(letter)}`, {
             method: 'POST'
         });
-        const data = await res.json();
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
 
         btn.classList.add(data.message.includes('Helyes') ? 'correct' : 'wrong');
-        
+
         if (data.display) {
             document.getElementById('word-display').textContent = data.display.split('').join(' ').trim();
             document.getElementById('mistakes').textContent = `Hibák: ${data.mistakes} / ${data.maxMistakes}`;
-            
+
             const msgEl = document.getElementById('message');
             msgEl.textContent = data.message;
             msgEl.style.color = data.message.includes('Helyes') ? '#69E3CC' : '#F04747';
